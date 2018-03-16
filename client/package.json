@@ -25,8 +25,7 @@
     "dev": "concurrently --kill-others-on-fail \"react-scripts start\" \"cd ../server && nodemon server -p 3001\"",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "heroku-postbuild": "yarn --production=false && yarn run build"
+    "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:3001"
 }
