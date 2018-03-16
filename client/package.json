@@ -1,0 +1,32 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "concurrently": "^3.5.1",
+    "moment": "^2.21.0",
+    "react": "^16.2.0",
+    "react-bootstrap": "^0.32.1",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.2.0",
+    "react-router-bootstrap": "^0.24.4",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^4.0.8",
+    "react-scripts": "1.1.1",
+    "react-table": "^6.8.0",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "superagent": "^3.8.2",
+    "superagent-promise": "^1.1.0",
+    "underscore": "^1.8.3"
+  },
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail \"react-scripts start\" \"cd ../server && nodemon server -p 3001\"",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "yarn --production=false && yarn run build"
+  },
+  "proxy": "http://localhost:3001"
+}
