@@ -3,3 +3,8 @@ body {
   padding: 0;
   font-family: 'Open Sans', sans-serif;
 }
+
+@keyframes loading {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}

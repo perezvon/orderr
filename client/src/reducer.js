@@ -5,6 +5,7 @@ import product from './reducers/product'
 import products from './reducers/products'
 import invoice from './reducers/invoice'
 import invoices from './reducers/invoices'
+import vendor from './reducers/vendor'
 import vendors from './reducers/vendors'
 
 export default combineReducers({
@@ -13,6 +14,7 @@ export default combineReducers({
   product,
   invoice,
   invoices,
+  vendor,
   vendors,
   router: routerReducer
 })

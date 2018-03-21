@@ -14,7 +14,7 @@ export const Navigation = ({vendors}) => (
           <LinkContainer to='/products'><MenuItem eventKey={1.1}>Products List</MenuItem></LinkContainer>
           <LinkContainer to='/products/new'><MenuItem eventKey={1.2}>Enter New Product</MenuItem></LinkContainer>
         </NavDropdown>
-        <NavItem eventKey={2}>Inventory</NavItem>
+        {/*<NavItem eventKey={2}>Inventory</NavItem>*/}
         <NavDropdown eventKey={3} title='Invoices' id='basic-nav-dropdown'>
           <LinkContainer to='/invoices/new'><MenuItem eventKey={3.1}>Enter New Invoice</MenuItem></LinkContainer>
           <MenuItem divider />
@@ -26,6 +26,7 @@ export const Navigation = ({vendors}) => (
           <LinkContainer to='/vendors'><MenuItem eventKey={vendors ? vendors.length + 1/10 + 4 : 1}>Vendors List...</MenuItem></LinkContainer>
           <LinkContainer to='/vendors/new'><MenuItem eventKey={4.99}>New Vendor</MenuItem></LinkContainer>
       </NavDropdown>
+      <LinkContainer to='/import'><NavItem eventKey={5}>Import...</NavItem></LinkContainer>
       </Nav>
     </Navbar.Collapse>
   </Navbar>

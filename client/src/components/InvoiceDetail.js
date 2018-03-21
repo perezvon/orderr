@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactTable from 'react-table'
-import {Grid, Row, Col, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap'
+import {Row, Col, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap'
 import { connect } from 'react-redux'
 import ProductAutosuggest from './ProductAutosuggest'
 import moment from 'moment'
@@ -66,12 +66,14 @@ class InvoiceDetail extends React.Component {
       else this.props.updateInvoice(agent.Invoices.update(invoice))
   }
 
+  addRow = () => {
+    console.log('row add')
+  }
+
   render () {
-    console.log(this.props)
     const {invoice, isNew} = this.state
     const { vendors } = this.props
     const vendorsList = vendors.map((item, index) => <option key={index} value={item.name}>{item.name}</option>)
-    const id = !isNew ? this.props.match.params.invoiceNum : null;
     const data = invoice.data
     const tableColumns = [{
       Header: 'Product ID',
@@ -87,7 +89,6 @@ class InvoiceDetail extends React.Component {
       accessor: 'qty'
     }]
     return (
-      <Grid>
         <form onSubmit={e => {this.handleSubmit(e)}}>
           <Row>
             <Col md={6}>
@@ -152,7 +153,7 @@ class InvoiceDetail extends React.Component {
               </FormGroup>
             </Col>
             <Col md={2}>
-              <Button bsStyle='primary' onClick={(e) => {this.handleSubmit(e)}}>Add Row</Button>
+              <Button bsStyle='primary' onClick={(e) => {this.addRow()}}>Add Row</Button>
             </Col>
             <Col md={2}>
               <Button bsStyle='primary' onClick={(e) => {this.handleSubmit(e)}}>Save Invoice</Button>
@@ -168,7 +169,6 @@ class InvoiceDetail extends React.Component {
         </Row>
           <Button bsStyle='success' type='submit'>{isNew ? 'Add' : 'Update'} Invoice</Button>
         </form>
-      </Grid>
     )
   }
 }
