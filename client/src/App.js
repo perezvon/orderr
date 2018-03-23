@@ -11,7 +11,9 @@ import Invoices from './components/Invoices'
 import InvoiceDetail from './components/InvoiceDetail'
 import Vendors from './components/Vendors'
 import VendorDetail from './components/VendorDetail'
-import FileUpload from './components/FileUpload'
+import {UploadType} from './components/UploadType'
+import {UploadOrderGuide} from './components/UploadOrderGuide'
+import {UploadSales} from './components/UploadSales'
 import {NotFoundPage} from './components/NotFoundPage'
 import {Loading} from './components/Loading'
 import {APP_LOAD, GET_VENDORS_LIST, GET_PRODUCTS_LIST} from './constants/actionTypes'
@@ -53,11 +55,14 @@ class App extends React.Component {
                 <Route exact path='/products/new' component={ProductDetail} />
                 <Route path='/products/:id' component={ProductDetail} />
                 <Route exact path='/vendors' component={Vendors} />
+                <Route exact path='/vendors/new' component={VendorDetail} />
                 <Route path='/vendors/:id' component={VendorDetail} />
                 <Route exact path='/invoices' component={Invoices} />
                 <Route exact path='/invoices/new' component={InvoiceDetail} />
                 <Route path='/invoices/:number' component={InvoiceDetail} />
-                <Route exact path='/import' component={FileUpload} />
+                <Route exact path='/import' component={UploadType} />
+                <Route exact path='/import/order-guide' component={UploadOrderGuide} />
+                <Route exact path='/import/sales' component={UploadSales} />
                 <Route component={NotFoundPage} />
               </Switch>
             </Grid>

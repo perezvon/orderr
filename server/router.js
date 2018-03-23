@@ -41,9 +41,7 @@ router.route('/products')
     var product = new Product();
     for (var key in req.body.product) {
       req.body.product[key] ? product[key] = req.body.product[key] : null;
-      console.log(key, product[key])
     }
-    console.log(product)
     product.save(function(err) {
       if (err)
         res.send(err);
@@ -93,8 +91,8 @@ router.route('/products/:product_id')
     })
     .post(function(req, res) {
       var vendor = new Vendor();
-      for (var key in req.body) {
-        req.body[key] ? vendor[key] = req.body[key] : null;
+      for (var key in req.body.vendor) {
+        req.body.vendor[key] ? vendor[key] = req.body.vendor[key] : null;
       }
       vendor.save(function(err) {
         if (err)
@@ -115,10 +113,9 @@ router.route('/products/:product_id')
       Vendor.findById(req.params.vendor_id, function(err, vendor) {
         if (err)
           res.send(err);
-        for (var key in req.body) {
-          req.body[key] ? vendor[key] = req.body[key] : null;
+        for (var key in req.body.vendor) {
+          req.body.vendor[key] ? vendor[key] = req.body.vendor[key] : null;
         }
-        console.log(vendor)
         vendor.save(function(err) {
           if (err)
             res.send(err);

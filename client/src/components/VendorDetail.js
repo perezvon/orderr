@@ -63,7 +63,6 @@ class VendorDetail extends React.Component {
   }
 
   render () {
-    console.log(this.state)
     const {vendor, isNew} = this.state;
     return (
         <form onSubmit={e => {this.handleSubmit(e)}}>

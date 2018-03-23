@@ -1,6 +1,7 @@
 import React from 'react'
 import {Grid, Row, Col, Button} from 'react-bootstrap'
 import {connect} from 'react-redux'
+import _ from 'underscore'
 import {InventoryTable} from './InventoryTable'
 import agent from '../agent'
 import {GET_PRODUCTS_LIST, SUBMIT_ORDERS} from '../constants/actionTypes'
@@ -36,7 +37,7 @@ class Home extends React.Component {
         toOrder.push(order)
       }
     })
-    const inventoryNeeds = toOrder.map((item, index) =>
+    const inventoryNeeds = _.sortBy(toOrder, 'vendor').map((item, index) =>
       <tr key={index}><td>{item.vendor}</td><td>{item.productId}</td><td>{item.name}</td><td>{item.qty + ' ' + item.unit}</td></tr>
     )
     return (

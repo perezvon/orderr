@@ -2,26 +2,52 @@ import React from 'react'
 import XLSX from 'xlsx'
 import {Row, Col} from 'react-bootstrap'
 import {Loading} from './Loading'
+import { connect } from 'react-redux'
+import agent from '../agent'
+import { ADD_PRODUCT } from '../constants/actionTypes'
+import _ from 'underscore'
 
-/* xlsx.js (C) 2013-present  SheetJS -- http://sheetjs.com */
-/* Notes:
-   - usage: `ReactDOM.render( <SheetJSApp />, document.getElementById('app') );`
-   - xlsx.full.min.js is loaded in the head of the HTML page
-   - this script should be referenced with type="text/babel"
-   - babel.js in-browser transpiler should be loaded before this script
-*/
+const orderGuideCols = ['productId', 'name', 'vendor', 'pack', 'size','unit',
+'category',
+'subcategory',
+'location',
+'inventoryCode',
+'price',
+'parLevel',
+'currentStock']
+
+const dragDropStyle = {
+	height: '150px',
+	border: '1px dotted #888',
+	backgroundColor: 'rgba(207, 207, 207, 0.48)',
+	marginBottom: '25px'
+}
+
+
+const mapStateToProps = state => {
+  return {
+    products: state.products,
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  createProduct: (payload) =>
+    dispatch({type: ADD_PRODUCT, payload })
+});
+
+
 class FileUpload extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			loading: false,
-			data: [], /* Array of Arrays e.g. [["a","b"],[1,2]] */
-			cols: []  /* Array of column objects e.g. { name: "C", K: 2 } */
+			data: [],
+			cols: []
 		};
 		this.handleFile = this.handleFile.bind(this);
 		this.exportFile = this.exportFile.bind(this);
 	};
-	handleFile(file/*:File*/) {
+	handleFile = (file/*:File*/) => {
 		/* Boilerplate to set up FileReader */
 		this.setState({loading: true})
 		const reader = new FileReader();
@@ -33,14 +59,14 @@ class FileUpload extends React.Component {
 			/* Get first worksheet */
 			const wsname = wb.SheetNames[0];
 			const ws = wb.Sheets[wsname];
-			/* Convert array of arrays */
-			const data = XLSX.utils.sheet_to_json(ws, {header:1});
+			/* Convert to json */
+			const data = XLSX.utils.sheet_to_json(ws);
 			/* Update state */
 			this.setState({ loading: false, data: data, cols: make_cols(ws['!ref']) });
 		};
 		if(rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
 	};
-	exportFile() {
+	exportFile = () => {
 		/* convert state to workbook */
 		const ws = XLSX.utils.aoa_to_sheet(this.state.data);
 		const wb = XLSX.utils.book_new();
@@ -48,29 +74,49 @@ class FileUpload extends React.Component {
 		/* generate XLSX file and send to client */
 		XLSX.writeFile(wb, "sheetjs.xlsx")
 	};
+
+	importFile = () => {
+		this.state.data.forEach(i => {
+			let product = i
+			///TODO: validation checks, error handling, load balance
+			const exists = _.where(this.props.products, {productId: product.productId})
+			if (exists.length){
+				setTimeout(() => {this.props.createProduct(agent.Products.create(product))}, 200)
+			}
+		})
+	};
+
 	render() {
 		const {loading} = this.state
-	 return (
+		const browserSupport = !!(window.File && window.FileReader && window.FileList && window.Blob)
+	  if (browserSupport) {return (
 			<div>
 				{loading && <Loading />}
 				<Row>
-<DragDropFile handleFile={this.handleFile}>
-</DragDropFile>
-<Col md={6}>
-		<DataInput handleFile={this.handleFile} />
-	</Col>
-	</Row>
-	<div className="row"><div className="col-xs-12">
-		<button disabled={!this.state.data.length} className="btn btn-success" onClick={this.exportFile}>Export</button>
-	</div></div>
-	<div className="row"><div className="col-xs-12">
-		<OutTable data={this.state.data} cols={this.state.cols} />
-	</div></div>
-	</div>
-); };
+					<DragDropFile handleFile={this.handleFile}>
+					</DragDropFile>
+					<Col md={6}>
+							<DataInput handleFile={this.handleFile} />
+						</Col>
+						</Row>
+						<div className="row"><div className="col-xs-12">
+							<button disabled={!this.state.data.length} className="btn btn-success" onClick={this.importFile}>Import</button>
+						</div></div>
+					<table className="table table-striped table-responsive">
+						<tbody>
+							{/*<tr>{orderGuideCols.map((c,i) => <td key={i}>{c}</td>)}</tr>
+						{this.state.data.length && <tr>{orderGuideCols.map(c => <td><ColsDropdown cols={Object.keys(this.state.data[0])} /></td>)}</tr>}*/}
+						</tbody>
+					</table>
+					<div className="row"><div className="col-xs-12">
+							{this.state.data.length && <OutTable data={this.state.data} cols={Object.keys(this.state.data[0])} /> }
+						</div></div>
+						</div>
+					)} else return (<div><h1>This browser does not fully support the HTML5 File API, which Orderr uses for imports. Please use Chrome or another modern browser.</h1></div>)
+				};
 };
 
-export default FileUpload
+export default connect(mapStateToProps, mapDispatchToProps)(FileUpload)
 
 /* -------------------------------------------------------------------------- */
 
@@ -90,8 +136,9 @@ class DragDropFile extends React.Component {
 		if(files && files[0]) this.props.handleFile(files[0]);
 	};
 	render() { return (
-<Col md={6} style={{height: '150px', border: '1px dotted #888'}} onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
+<Col md={6} style={dragDropStyle} onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
 	drag a spreadsheet file here...
+	<img src='/plus.svg' style={{width: '50px', height: '50px', marginTop: '50px'}} />
 </Col>
 	); };
 };
@@ -132,17 +179,26 @@ class OutTable extends React.Component {
 <div className="table-responsive">
 	<table className="table table-striped">
 		<thead>
-			<tr>{this.props.cols.map((c) => <th key={c.key}>{c.name}</th>)}</tr>
+			<tr>{this.props.cols.map((c, i) => <th key={i}>{c}</th>)}</tr>
 		</thead>
 		<tbody>
 			{this.props.data.map((r,i) => <tr key={i}>
-				{this.props.cols.map(c => <td key={c.key}>{ r[c.key] }</td>)}
+				{this.props.cols.map((c, i) => <td key={i}>{ r[c] }</td>)}
 			</tr>)}
 		</tbody>
 	</table>
 </div>
 	); };
 };
+
+class ColsDropdown extends React.Component {
+	constructor(props) { super(props); };
+	render() { return (
+		<select>
+			{this.props.cols.map((c,i) => <option key={i} value={c}>{c}</option>)}
+		</select>
+	)}
+}
 
 /* list of supported file types */
 const SheetJSFT = [

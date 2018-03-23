@@ -18,7 +18,7 @@ class Products extends React.Component{
     //this.props.onLoad(agent.Products.all, agent.Products.all())
   }
   render () {
-    if (this.props.products.length > 0) {
+    if (this.props.products.length) {
     return (
       <Grid>
         <Row>
