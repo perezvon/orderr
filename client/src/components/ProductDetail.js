@@ -80,9 +80,14 @@ class ProductDetail extends React.Component {
               <Col md={3}>
                 <FormGroup controlId='formControlsSelect'>
                   <ControlLabel>Vendor </ControlLabel>
-                  <FormControl componentClass='select' placeholder='select' name='vendor' value={product.vendor} onChange={e => {this.handleInput(e)}}>
-                    <option value=''>none selected</option>
-                    {vendorsList}
+                  <FormControl
+                    componentClass='select'
+                    placeholder='select'
+                    name='vendor'
+                    value={product.vendor}
+                    onChange={e => {this.handleInput(e)}}>
+                      <option value=''>none selected</option>
+                      {vendorsList}
                   </FormControl>
                 </FormGroup>
               </Col>
@@ -114,9 +119,14 @@ class ProductDetail extends React.Component {
               <Col md={3}>
                 <FormGroup controlId='formControlsSelect'>
                   <ControlLabel>Location </ControlLabel>
-                  <FormControl componentClass='select' placeholder='select' name='location' value={product.location} onChange={e => {this.handleInput(e)}}>
-                    <option value=''>none selected</option>
-                    {locationsList}
+                  <FormControl
+                    componentClass='select'
+                    placeholder='select'
+                    name='location'
+                    value={product.location}
+                    onChange={e => {this.handleInput(e)}}>
+                      <option value=''>none selected</option>
+                      {locationsList}
                     {/*<option value='new'>add new...</option>*/}
                   </FormControl>
                 </FormGroup>
@@ -124,9 +134,13 @@ class ProductDetail extends React.Component {
               <Col md={3}>
                 <FormGroup controlId='formControlsSelect'>
                   <ControlLabel>Category </ControlLabel>
-                  <FormControl componentClass='select' placeholder='select' name='category' value={product.category} onChange={e => {this.handleInput(e)}}>
-                    <option value=''>none selected</option>
-                    {categoriesList}
+                  <FormControl componentClass='select'
+                    placeholder='select'
+                    name='category'
+                    value={product.category}
+                    onChange={e => {this.handleInput(e)}}>
+                      <option value=''>none selected</option>
+                      {categoriesList}
                     {/*<option value='new'>add new...</option>*/}
                   </FormControl>
                 </FormGroup>
@@ -135,12 +149,12 @@ class ProductDetail extends React.Component {
                 <FormGroup>
                   <ControlLabel>Subcategory </ControlLabel>
                   <FormControl
-                  type='text'
-                  name='subcategory'
-                  value={product.subcategory}
-                  placeholder='Subcategory'
-                  onChange={e => {this.handleInput(e)}}
-                />
+                    type='text'
+                    name='subcategory'
+                    value={product.subcategory}
+                    placeholder='Subcategory'
+                    onChange={e => {this.handleInput(e)}}
+                  />
                 </FormGroup>
               </Col>
             </Row>
@@ -149,59 +163,75 @@ class ProductDetail extends React.Component {
                 <FormGroup>
                   <ControlLabel>Pack </ControlLabel>
                   <FormControl
-                  type='number'
-                  name='pack'
-                  value={product.pack}
-                  step='.01'
-                  onChange={e => {this.handleInput(e)}}
-                />
+                    type='number'
+                    name='pack'
+                    value={product.pack}
+                    step='.01'
+                    onChange={e => {this.handleInput(e)}}
+                  />
                 </FormGroup>
               </Col>
               <Col md={2}>
                 <FormGroup>
                   <ControlLabel>Size </ControlLabel>
                   <FormControl
-                  type='number'
-                  name='size'
-                  value={product.size}
-                  onChange={e => {this.handleInput(e)}}
-                />
+                    type='number'
+                    name='size'
+                    value={product.size}
+                    onChange={e => {this.handleInput(e)}}
+                  />
                 </FormGroup>
               </Col>
               <Col md={2}>
                 <FormGroup>
                   <ControlLabel>Unit </ControlLabel>
                   <FormControl
-                  type='text'
-                  name='unit'
-                  value={product.unit}
-                  placeholder='Unit'
-                  onChange={e => {this.handleInput(e)}}
-                />
+                    type='text'
+                    name='unit'
+                    value={product.unit}
+                    placeholder='Unit'
+                    onChange={e => {this.handleInput(e)}}
+                  />
                 </FormGroup>
               </Col>
               <Col md={2}>
                 <FormGroup>
                   <ControlLabel>Price </ControlLabel>
                   <FormControl
-                  type='number'
-                  name='price'
-                  value={product.price}
-                  step='.01'
-                  onChange={e => {this.handleInput(e)}}
-                />
+                    type='number'
+                    name='price'
+                    value={product.price}
+                    step='.01'
+                    onChange={e => {this.handleInput(e)}}
+                  />
                 </FormGroup>
               </Col>
+            </Row>
+            <Row>
               <Col md={2}>
                 <FormGroup>
                   <ControlLabel>Par Level </ControlLabel>
                   <FormControl
-                  type='number'
-                  name='parLevel'
-                  value={product.parLevel}
-                  step='.1'
-                  onChange={e => {this.handleInput(e)}}
-                />
+                    type='number'
+                    name='parLevel'
+                    value={product.parLevel}
+                    step='.1'
+                    onChange={e => {this.handleInput(e)}}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={2}>
+                <FormGroup>
+                  <ControlLabel>Par Unit </ControlLabel>
+                    <FormControl
+                      componentClass='select'
+                      placeholder='select'
+                      name='parUnit'
+                      value={product.parUnit}
+                      onChange={e => {this.handleInput(e)}}>
+                        <option value={product.unit}>{product.unit}</option>
+                        <option value={product.parUnit || 'cs'}>{product.parUnit || `cs`}</option>
+                    </FormControl>
                 </FormGroup>
               </Col>
               <Col md={2}>

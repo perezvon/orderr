@@ -58,6 +58,8 @@ class VendorDetail extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
       let {vendor, isNew} = this.state
+      console.log(vendor)
+      console.log(isNew)
       if (isNew) this.props.createVendor(agent.Vendors.create(vendor))
       else this.props.updateVendor(agent.Vendors.update(vendor))
   }

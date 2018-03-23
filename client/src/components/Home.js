@@ -1,10 +1,13 @@
 import React from 'react'
+import {LinkContainer} from 'react-router-bootstrap'
 import {Grid, Row, Col, Button} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import _ from 'underscore'
 import {InventoryTable} from './InventoryTable'
 import agent from '../agent'
 import {GET_PRODUCTS_LIST, SUBMIT_ORDERS} from '../constants/actionTypes'
+
+const linkStyle = {cursor: 'pointer'}
 
 const mapStateToProps = state => {
   return {
@@ -33,12 +36,12 @@ class Home extends React.Component {
         order.name = item.name
         order.vendor = item.vendor
         order.qty = item.parLevel - item.currentStock
-        order.unit = item.unit
+        order.unit = item.parUnit || item.unit
         toOrder.push(order)
       }
     })
     const inventoryNeeds = _.sortBy(toOrder, 'vendor').map((item, index) =>
-      <tr key={index}><td>{item.vendor}</td><td>{item.productId}</td><td>{item.name}</td><td>{item.qty + ' ' + item.unit}</td></tr>
+      <LinkContainer style={linkStyle} key={index} to={`/products/${item.productId}`}><tr key={index}><td>{item.vendor}</td><td>{item.productId}</td><td>{item.name}</td><td>{item.qty + ' ' + item.unit}</td></tr></LinkContainer>
     )
     return (
       <Grid>

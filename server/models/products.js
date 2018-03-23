@@ -18,6 +18,7 @@ var ProductSchema = new Schema({
  inventoryCode: String,
  price: Number,
  parLevel: Number,
+ parUnit: String,
  currentStock: Number,
  orderHistory: [{
    date: Date,

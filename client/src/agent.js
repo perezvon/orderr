@@ -57,7 +57,7 @@ const Invoices = {
   get: id =>
     requests.get(`/invoices/${id}`),
   update: invoice =>
-    requests.put(`/invoices/${invoice.id}`, { invoice }),
+    requests.put(`/invoices/${invoice._id}`, { invoice }),
   create: invoice =>
     requests.post('/invoices', { invoice })
 };
@@ -70,7 +70,7 @@ const Vendors = {
   get: id =>
     requests.get(`/vendors/${id}`),
   update: vendor =>
-    requests.put(`/vendors/${vendor.id}`, { vendor }),
+    requests.put(`/vendors/${vendor._id}`, { vendor }),
   create: vendor =>
     requests.post('/vendors', { vendor })
 };

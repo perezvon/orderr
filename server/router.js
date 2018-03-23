@@ -6,6 +6,7 @@ const mailService = require('./mailService')
 const Product = require('./models/products');
 const Vendor = require('./models/vendors');
 const Invoice = require('./models/invoices');
+const config = require('./config')
 
 //routes for POS integrations
 const squareConnect = require('./integrations/square/index')
@@ -51,7 +52,7 @@ router.route('/products')
 
 router.route('/products/:product_id')
   .get(function(req, res) {
-    Product.findById(req.params.product_id, function(err, product) {
+    Product.findOne({productId: req.params.product_id}, function(err, product) {
       if (err)
         res.send(err);
       res.json(product)
@@ -63,7 +64,7 @@ router.route('/products/:product_id')
         res.send(err);
       for (var key in req.body.product) {
         if (key !== '_id' && key !=='__v') {
-        product[key] = req.body.product[key] ? req.body.product[key] : null;
+          product[key] = req.body.product[key] ? req.body.product[key] : null;
         }
       }
       product.save(function(err) {
@@ -110,11 +111,15 @@ router.route('/products/:product_id')
       })
     })
     .put(function(req, res) {
+      console.log(req.params)
       Vendor.findById(req.params.vendor_id, function(err, vendor) {
         if (err)
           res.send(err);
+          console.log(vendor)
         for (var key in req.body.vendor) {
-          req.body.vendor[key] ? vendor[key] = req.body.vendor[key] : null;
+          if (key !== '_id' && key !=='__v') {
+            req.body.vendor[key] ? vendor[key] = req.body.vendor[key] : null;
+          }
         }
         vendor.save(function(err) {
           if (err)
@@ -187,8 +192,8 @@ router.route('/products/:product_id')
       //route to send email orders to vendors
       router.route('/submitOrders')
         .post(function(req, res) {
-          const company = process.env.COMPANY_EMAIL || '"orders" <orders@distantbluesoftware.com>'
-          const companyName = process.env.COMPANY_NAME || "Distant Blue Software"
+          const company = config.COMPANY_EMAIL;
+          const companyName = config.COMPANY_NAME;
           let data = [];
           const uniqueVendors = _.uniq(req.body.orders.map(i => i.vendor).sort())
           uniqueVendors.forEach(v => {
@@ -206,7 +211,6 @@ router.route('/products/:product_id')
                     text: array[0].vendor + '\n' + 'Product # -- Name -- QTY \n' + vendorOrderText, // plain text body
                     html: '<h2 style="color: #999;">Hello,</h2> <p>Please see the below order. Please round quantities up to the nearest whole case where required. Reply to this email with any questions. Thanks!</p><p>' + array[0].vendor + '</p>' + '<table style="border: 1px solid black; border-collapse:collapse; width:100%;"><thead><th>Product#</th><th>Name</th><th>QTY</th></thead><tbody>'+vendorOrderHtml+'</tbody></table>' // html body
                 };
-                console.log(mailOptions)
                 // send mail with defined transport object
                 mailService.sendMail(mailOptions, (error, info) => {
                     if (error) {

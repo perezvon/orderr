@@ -27,7 +27,7 @@ class Products extends React.Component{
               <thead><tr><th>Vendor</th><th>Product ID</th><th>Product Name</th></tr></thead>
               <tbody>
                 {this.props.products.map((p, i) =>
-                  <LinkContainer style={style} key={i} to={`/products/${p._id}`}>
+                  <LinkContainer style={style} key={i} to={`/products/${p.productId}`}>
                     <tr data-id={p._id}>
                       <td>{p.vendor}</td>
                       <td>{p.productId}</td>
